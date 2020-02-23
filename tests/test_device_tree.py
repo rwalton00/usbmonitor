@@ -1,8 +1,10 @@
 """Tests for CLI."""
 
 from usbmonitor.usb import device_tree
+from typing import Iterator
 
 
-def test_view_all_devices():
+def test_iter_devices():
     dev_tree = device_tree.DeviceTree()
-    assert dev_tree.get_connected_devices() == dict()
+    assert isinstance(dev_tree.iter_devices(), Iterator)
+    assert len(dev_tree)

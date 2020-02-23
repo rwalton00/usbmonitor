@@ -1,10 +1,28 @@
 """A command line utility for routing and monitoring MIDI ports."""
 
 import pathlib
+import lzma
+import urllib
 
 from setuptools import find_packages, setup
+from distutils.command.build import build
 
 here = pathlib.Path(__file__).absolute().parent
+
+
+class FetchLibusbBuilder(build):
+    def run(self):
+        urllib.urlretrieve("https://github.com/libusb/libusb/releases/download/v1.0.23/libusb-1.0.23.7z", "libusb-1.0.23.7z")
+        with lzma.open("libusb-1.0.23.7z") as libusblzma:
+            pathlib.Path("libusb-1.0.23").write_bytes(lzma.decompress(libusblzma.read()))
+
+
+def run():
+    urllib.request.urlretrieve("https://github.com/libusb/libusb/releases/download/v1.0.23/libusb-1.0.23.7z", "libusb-1.0.23.7z")
+    pathlib.Path("libusb-1.0.23").mkdir(exist_ok=True)
+    Archive("libusb-1.0.23.7z").extractall("libusb-1.0.23")
+
+
 
 # Get the long description from the README file
 with open(str(pathlib.Path(here, "README.md")), encoding="utf-8") as f:
@@ -25,7 +43,7 @@ setup(
     description=DESCRIPTION,
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="",
+    url="https://github.com/rwalton00/usbmonitor",
     author="Rob Walton",
     author_email="rwalton00@gmail.com",
     classifiers=[
