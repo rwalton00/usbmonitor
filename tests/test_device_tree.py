@@ -7,4 +7,8 @@ from typing import Iterator
 def test_iter_devices():
     dev_tree = device_tree.DeviceTree()
     assert isinstance(dev_tree.iter_devices(), Iterator)
-    assert len(dev_tree)
+
+
+def test_len_devices():
+    dev_tree = device_tree.DeviceTree()
+    assert len(dev_tree) >= 0
